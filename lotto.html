@@ -3,16 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CS:GO Style Raffle System</title>
+    <title></title>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <style type="text/css">
     body {
-        background: #212121;
+        background: black;
         color: white;
-        background: url(http://re3ker.de/raffle/images/bg.jpg) 50% 50% no-repeat;
-        background-size: cover;
-        -moz-background-size: cover;
-        -webkit-background-size: cover;
         height: 100%;
     }
 
@@ -26,6 +22,12 @@
         -moz-background-size: cover;
         -webkit-background-size: cover;
         height: 100%;
+    }
+
+    #playerlist{
+        position: absolute;
+        z-index: 100;
+        color: white;
     }
 
     .topbox {
@@ -84,7 +86,7 @@
         text-align: center;
         color: white;
         line-height: 180px;
-        font-size: 3.8em;
+        font-size: 2.8em;
         font-weight: bold;
         font-family: sans-serif;
     }
@@ -94,7 +96,6 @@
         height: 50px;
         line-height: 50px;
         position: absolute;
-        bottom: 50%;
         width: 100%;
         left: 0;
 
@@ -139,7 +140,11 @@
         font-weight: bold;
         color: #57B3F9;
     }
-
+    
+    .log-row {
+        position: absolute;
+        z-index: 100;
+    }
     #roll {
         margin-top: 30px;
     }
@@ -167,28 +172,48 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
+    	$("#textarea").val("3 Henning Jensen\n5 Stian\n2 Lars\n1 Thomas Pedersen\nPer");
         var users = [],
-            shuffled = [],
-            loadout = $("#loadout"),
-            insert_times = 30,
-            duration_time = 10000;
-        $("#roll").click(function() {
+        shuffled = [],
+        loadout = $("#loadout"),
+        insert_times = 30,
+        duration_time = 10000;
+        $("#loadList").click(function(){
             users = [];
-            temp = [];
-            var lines = $('textarea').val().split('\n');
-            if (lines.length < 2) {
+            lines = [];
+
+            let players = $('textarea').val().split('\n');
+            console.log("loading raffle tickets");
+            for (p of players) {
+                let line = p.split(' ');
+                if (!isNaN(line[0])){
+                    for (var i = 0; i<line[0]; i++){
+                        let l = (i+1)+' '+line.slice(1).join(' ');
+                        console.log(l);
+                        lines.push(l);
+                    }
+                } else {
+                    lines.push(p);
+                }
+            }
+            users = lines;
+
+            $("#numberOfTickets").text(lines.length);
+            $("#loadedInfo").slideToggle(100);
+            setTimeout(function() {
+                $("#loadedInfo").slideToggle(100);
+            }, 3000);
+            updateTicketList();
+        });
+        $("#roll").click(function() {
+            
+            if (users.length < 2) {
                 $("#msgbox").slideToggle(100);
                 setTimeout(function() {
                     $("#msgbox").slideToggle(100);
                 }, 3000);
                 return false;
             }
-            for (var i = 0; i < lines.length; i++) {
-                if (lines[i].length > 0) {
-                    temp[Math.floor((Math.random() * 1000) + 1)] = lines[i];
-				}
-            }
-			users = temp.filter(function(){return true;});
             $("#roll").attr("disabled", true);
             var scrollsize = 0,
                 diff = 0; $(loadout).html(""); $("#log").html(""); loadout.css("left", "100%");
@@ -217,37 +242,61 @@
                     var center = window.innerWidth / 2;
                     if ($(this).offset().left < center && $(this).offset().left + 185 > center) {
                         var text = $(this).children().text();
+                        if (users.indexOf(text)!=-1) {
+                            users.splice(users.indexOf(text), 1);
+                        } else {
+                            console.log("unable to remove " + text);
+                            console.log(text);
+                            console.log(users);
+                        }
                         $("#log").append("THE WINNER IS<br/> <span class=\"badge\">" + text + "</span>");
+                        updateTicketList();
 
                     }
 
                 });
             });
-        }); Array.prototype.shuffle = function() {
-        var counter = this.length,
+        }); 
+        Array.prototype.shuffle = function() {
+            var counter = this.length,
             temp, index;
-        while (counter > 0) {
-            index = (Math.random() * counter--) | 0;
-            temp = this[counter];
-            this[counter] = this[index];
-            this[index] = temp;
+            while (counter > 0) {
+                index = (Math.random() * counter--) | 0;
+                temp = this[counter];
+                this[counter] = this[index];
+                this[index] = temp;
+            }
         }
-    }
 
-    function randomEx(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
+        function randomEx(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        function updateTicketList() {
+            $('#playerlist').html(users.join('\n'));
+            $('.noTickets').text(users.length);
+        }
     });
     </script>
 </head>
 
 <body>
     <div class="container">
+        <div id="playerlist"></div>
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-6">
                 <div class="page-header">
-                    <h1>CS:GO Style RaffleSystem <small>by Re3ker</small></h1>
+                    <h1>Vin lotteri</h1>
                 </div>
+            </div>
+            <div class="col-6 text-right">
+                <div class="noTickets">
+                    <h1>Vin lotteri</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row log-row">
+            <div class="col-md-12" style="text-align:center">
+                <div id="log"></div>
             </div>
         </div>
         <div class="row topbox">
@@ -262,23 +311,22 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <button id="roll" class="btn btn-success form-control">Roll</button>
-                <div id="msgbox" class="alert alert-warning" style="margin-top:20px;display:none;">You need to add at least 2 lines!</div>
+                <div id="msgbox" class="alert alert-warning" style="margin-top:20px;display:none;">Please load the list first, there are less than 2 tickets in the raffle</div>
+                <div id="loadedInfo" class="alert alert-warning" style="margin-top:20px;display:none;">List loaded with <span id="numberOfTickets"></span> raffle tickets</div>
+
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12" style="text-align:center">
-                <div id="log"></div>
-            </div>
-        </div>
+        
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <p>Insert the list of Users:</p>
-                <textarea class="form-control inputbox" rows="10"></textarea>
+                <textarea class="form-control inputbox" rows="10" id="textarea">
+                </textarea>
+                <button id="loadList" class="btn btn-success form-control">Load List</button>
             </div>
         </div>
     </div>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src="js/index.js"></script>
 </body>
 
 </html>

@@ -189,7 +189,7 @@
                 if (!isNaN(line[0])){
                     for (var i = 0; i<line[0]; i++){
                         let l = (i+1)+' '+line.slice(1).join(' ');
-                        console.log(l);
+                        
                         lines.push(l);
                     }
                 } else {
@@ -197,7 +197,7 @@
                 }
             }
             users = lines;
-
+            console.log(lines);
             $("#numberOfTickets").text(lines.length);
             $("#loadedInfo").slideToggle(100);
             setTimeout(function() {
@@ -272,7 +272,7 @@
             return Math.floor(Math.random() * (max - min + 1) + min);
         }
         function updateTicketList() {
-            $('#playerlist').html(users.join('\n'));
+            $('#playerlist').html('<ul><li>'+users.join('</li><li>')+'</li></ul>');
             $('.noTickets').text(users.length);
         }
     });
@@ -281,7 +281,6 @@
 
 <body>
     <div class="container">
-        <div id="playerlist"></div>
         <div class="row">
             <div class="col-6">
                 <div class="page-header">
@@ -290,7 +289,7 @@
             </div>
             <div class="col-6 text-right">
                 <div class="noTickets">
-                    <h1>Vin lotteri</h1>
+                    no tickets
                 </div>
             </div>
         </div>
@@ -318,6 +317,7 @@
         </div>
         
         <div class="row">
+            <div id="playerlist"></div>
             <div class="col-md-6 col-md-offset-3">
                 <p>Insert the list of Users:</p>
                 <textarea class="form-control inputbox" rows="10" id="textarea">

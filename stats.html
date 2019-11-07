@@ -1,0 +1,34 @@
+<script>
+	var stortickets='<ul><li>1 henning</li><li>2 henning</li><li>3 henning</li><li>4 henning</li><li>5 henning</li><li>6 henning</li><li>7 henning</li><li>8 henning</li><li>1 thomas</li><li>2 thomas</li><li>3 thomas</li><li>4 thomas</li><li>5 thomas</li><li>6 thomas</li><li>7 thomas</li><li>8 thomas</li><li>1 stian</li><li>2 stian</li><li>3 stian</li><li>4 stian</li><li>5 stian</li><li>1 lars</li><li>2 lars</li><li>3 lars</li><li>4 lars</li><li>5 lars</li><li>6 lars</li><li>7 lars</li><li>8 lars</li><li>1 per</li><li>2 per</li><li>3 per</li><li>4 per</li><li>5 per</li><li>1 lasse</li><li>2 lasse</li><li>1 georg</li><li>2 georg</li><li>3 georg</li><li>4 georg</li><li>5 georg</li><li>6 georg</li><li>7 georg</li><li>8 georg</li><li>1 geir</li><li>2 geir</li><li>3 geir</li><li>4 geir</li><li>5 geir</li><li>6 geir</li><li>7 geir</li><li>8 geir</li><li>9 geir</li><li>10 geir</li><li>1 camilla</li><li>2 camilla</li><li>3 camilla</li><li>4 camilla</li><li>5 camilla</li><li>1 catrine</li><li>2 catrine</li><li>3 catrine</li><li>4 catrine</li><li>5 catrine</li><li>6 catrine</li><li>7 catrine</li><li>8 catrine</li><li>1 hilde</li><li>2 hilde</li><li>3 hilde</li><li>1 hans</li><li>2 hans</li><li>3 hans</li><li>4 hans</li><li>5 hans</li><li>6 hans</li><li>7 hans</li><li>8 hans</li></ul>'
+
+	var storres = {"1 geir":57,"1 camilla":58,"4 hans":60,"7 henning":56,"3 stian":54,"4 georg":58,"1 hans":59,"1 per":72,"5 catrine":67,"6 geir":65,"2 per":58,"4 lars":76,"2 georg":58,"3 georg":62,"2 camilla":69,"8 hans":66,"5 hans":60,"1 hilde":61,"3 thomas":49,"2 lars":57,"4 thomas":63,"2 henning":66,"2 stian":64,"3 hilde":67,"4 stian":68,"7 geir":57,"2 hilde":62,"6 lars":61,"8 georg":68,"1 stian":60,"7 thomas":59,"3 henning":62,"6 georg":62,"7 georg":44,"5 georg":52,"6 catrine":59,"2 lasse":62,"1 henning":69,"3 lars":69,"3 hans":61,"4 per":69,"3 per":62,"1 lars":54,"4 catrine":60,"5 lars":77,"6 henning":48,"3 geir":70,"8 thomas":60,"4 henning":67,"5 per":65,"10 geir":60,"5 camilla":70,"8 catrine":70,"3 catrine":58,"7 catrine":58,"1 lasse":66,"5 geir":74,"6 hans":60,"5 thomas":65,"5 henning":51,"4 geir":62,"2 geir":62,"2 hans":57,"7 lars":63,"4 camilla":71,"1 catrine":66,"8 henning":64,"1 georg":56,"2 thomas":63,"2 catrine":62,"3 camilla":50,"6 thomas":61,"5 stian":66,"8 geir":56,"8 lars":80,"9 geir":54,"7 hans":68,"1 thomas":66};
+
+
+
+
+
+	var litentickets='<div id="playerlist"><ul><li>1 Henning Jensen</li><li>2 Henning Jensen</li><li>3 Henning Jensen</li><li>1 Stian</li><li>2 Stian</li><li>3 Stian</li><li>4 Stian</li><li>5 Stian</li><li>1 Lars</li><li>2 Lars</li><li>1 Thomas Pedersen</li><li>Per</li></ul></div>';
+
+	var litenres={"3 Stian":572,"1 Lars":566,"4 Stian":560,"Per":562,"2 Stian":586,"2 Henning Jensen":560,"1 Stian":567,"2 Lars":576,"5 Stian":557,"3 Henning Jensen":540,"1 Thomas Pedersen":532,"1 Henning Jensen":560}
+
+
+;
+var langres={"kort":4102,"langenavnhansensen":4153}
+
+;
+
+	
+	var sortObject = function(items) {
+		var sortable = [];
+		for (var item in items) {
+		    sortable.push([item, items[item]]);
+		}
+
+		sortable.sort(function(a, b) {
+		    return a[1] - b[1];
+		});
+		return sortable;
+	}
+
+	document.documentElement.innerHTML = litentickets+JSON.stringify(sortObject(litenres))+stortickets+JSON.stringify(sortObject(storres))+'<br /><br /><br /><br /><br />'+JSON.stringify(sortObject(langres));
+</script>
